@@ -1,9 +1,9 @@
 # serve
 
-A file serving middleware for [rkgo/web](https://github.com/rkgo/web)
+A file serving middleware that works well (but not exclusively) with [rkusa/web](https://github.com/rkusa/web).
 
-[![Build Status][drone]](https://ci.rkusa.st/rkgo/serve)
-[![GoDoc][godoc]](https://godoc.org/github.com/rkgo/serve)
+[![Build Status][travis]](https://travis-ci.org/rkusa/serve)
+[![GoDoc][godoc]](https://godoc.org/github.com/rkusa/serve)
 
 ### Example
 
@@ -12,5 +12,9 @@ app := web.New()
 app.Use(serve.Dir("public"))
 ```
 
-[drone]: http://ci.rkusa.st/api/badges/rkgo/serve/status.svg?style=flat-square
-[godoc]: http://img.shields.io/badge/godoc-reference-blue.svg?style=flat-square
+## License
+
+[MIT](LICENSE)
+
+[travis]: https://img.shields.io/travis/rkusa/serve.svg
+[godoc]: http://img.shields.io/badge/godoc-reference-blue.svg

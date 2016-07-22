@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/rkgo/web"
+	"github.com/rkusa/web"
 )
 
 func TestDirFileFound(t *testing.T) {
@@ -15,9 +15,9 @@ func TestDirFileFound(t *testing.T) {
 	app.Use(Dir("."))
 
 	secondCalled := false
-	app.Use(func(ctx web.Context, next web.Next) {
+	app.Use(func(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 		secondCalled = true
-		next(ctx)
+		next(rw, r)
 	})
 
 	rec := httptest.NewRecorder()
@@ -51,9 +51,9 @@ func TestDirFileNotFound(t *testing.T) {
 	app.Use(Dir("."))
 
 	secondCalled := false
-	app.Use(func(ctx web.Context, next web.Next) {
+	app.Use(func(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 		secondCalled = true
-		next(ctx)
+		next(rw, r)
 	})
 
 	rec := httptest.NewRecorder()

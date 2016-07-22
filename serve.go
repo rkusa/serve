@@ -1,4 +1,5 @@
-// A file serving middleware for [rkgo/web](https://github.com/rkgo/web)
+// Package serve is a file serving middleware. It works well (but not
+// exclusively) with [rkusa/web](https://github.com/rkusa/web).
 //
 //  app := web.New()
 //  app.Use(serve.Dir("public"))
@@ -7,33 +8,31 @@ package serve
 
 import (
 	"net/http"
-
-	"github.com/rkgo/web"
 )
 
-func Dir(dir string) web.Middleware {
+func Dir(dir string) func(http.ResponseWriter, *http.Request, http.HandlerFunc) {
 	fs := http.Dir(dir)
 
-	return func(ctx web.Context, next web.Next) {
-		if ctx.Req().Method != "GET" && ctx.Req().Method != "HEAD" {
-			next(ctx)
+	return func(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
+		if r.Method != "GET" && r.Method != "HEAD" {
+			next(rw, r)
 			return
 		}
 
-		name := ctx.Req().URL.Path
+		name := r.URL.Path
 		file, err := fs.Open(name)
 		if err != nil {
-			next(ctx)
+			next(rw, r)
 			return
 		}
 		defer file.Close()
 
 		stat, err := file.Stat()
 		if err != nil || stat.IsDir() {
-			next(ctx)
+			next(rw, r)
 			return
 		}
 
-		http.ServeContent(ctx, ctx.Req(), name, stat.ModTime(), file)
+		http.ServeContent(rw, r, name, stat.ModTime(), file)
 	}
 }
